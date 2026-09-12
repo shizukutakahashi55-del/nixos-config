@@ -29,6 +29,8 @@ git add hardware-configuration.nix
 
 ### 4. Aplicar la configuración
 > Nota: Asegúrate de estar ubicado en la carpeta ~/nixos-config antes de ejecutar este comando.
+> Reemplaza #nixos por el host de tu maquina.
+
 ```bash
 sudo nixos-rebuild switch --flake .#nixos
 ```
