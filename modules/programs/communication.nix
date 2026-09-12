@@ -8,7 +8,7 @@
   environment.systemPackages = with pkgs; [
     discord
     
-    # OBS empaquetado con soporte PipeWire
+    # OBS empaquetado con soporte Nvidia
     (obs-studio.override {
       cudaSupport = true;
     })
