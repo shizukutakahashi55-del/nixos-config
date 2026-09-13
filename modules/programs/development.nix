@@ -6,7 +6,10 @@
   # ─────────────────────────────────────────────
 
   environment.systemPackages = with pkgs; [
+    direnv
     git
+    gh
+    lazygit
     python3
     python3Packages.pip
     vscodium
@@ -14,5 +17,6 @@
     nixd 
     # Formateador oficial de código Nix
     nixfmt-rfc-style
+    nix-direnv 
   ];
 }
