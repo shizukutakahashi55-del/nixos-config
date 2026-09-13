@@ -2,11 +2,6 @@
 
 {
   
- # ---------------------------------------------------------------------------
-  # Paquetes del Sistema
-  # Navegadores web disponibles a nivel global en el sistema.
-  # ---------------------------------------------------------------------------
-
   # ---------------------------------------------------------------------------
   # Paquetes del Sistema
   # Navegadores web disponibles a nivel global en el sistema.
