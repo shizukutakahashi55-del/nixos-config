@@ -1,4 +1,4 @@
-# ❄️ NixOS Configuration (Flakes)
+# ❄️ NixOS Configuration (Flakes) + NVIDIA
 
 Configuración modular y declarativa de **NixOS** gestionada con **Nix Flakes**, **Git** y **KDE Plasma**.
 
