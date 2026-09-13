@@ -6,6 +6,7 @@
   # ─────────────────────────────────────────────
 
   environment.systemPackages = with pkgs; [
+    alacritty
     eza          #Reemplazo moderno e interactivo de ls con iconos y árbol de archivos.
     fastfetch
     kitty
