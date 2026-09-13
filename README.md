@@ -63,7 +63,8 @@ cd ~/nixos-config
 >
 > **No debes reutilizar el archivo de otra PC.**
 
-Genera el archivo correspondiente a tu instalación y reemplaza el del repositorio:
+OJO, ESTE COMANDO ES SOLO SI HACES LA INSTALACION DE CERO, Si usaste la instalacion graph omite este comando y pasa al siguiente.
+Genera el archivo correspondiente a tu instalación y reemplaza el del repositorio: 
 
 ```bash
 sudo nixos-generate-config
