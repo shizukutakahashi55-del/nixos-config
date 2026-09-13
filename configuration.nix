@@ -9,7 +9,7 @@
     ./hardware-configuration.nix
 
     # ───────────────────────────────────────────
-    # System
+    # Sistema
     # ───────────────────────────────────────────
 
     ./modules/boot.nix
@@ -20,7 +20,7 @@
     ./modules/users.nix
 
     # ───────────────────────────────────────────
-    # Programs
+    # Programas
     # ───────────────────────────────────────────
 
     ./modules/programs/browsers.nix
@@ -28,19 +28,22 @@
     ./modules/programs/development.nix
     ./modules/programs/gaming.nix
     ./modules/programs/kde.nix
+    ./modules/programs/obs.nix
+    ./modules/programs/steam.nix
+    ./modules/programs/suwayomi.nix
     ./modules/programs/system.nix
     ./modules/programs/terminal.nix
+
+    # ───────────────────────────────────────────
+    # Servicios
+    # ───────────────────────────────────────────
+
+    ./modules/services/flatpak.nix
+    
   ];
 
   # ─────────────────────────────────────────────
-  # Services
-  # ─────────────────────────────────────────────
-
-  # Habilita el soporte para paquetes Flatpak en el sistema
-  services.flatpak.enable = true;
-
-  # ─────────────────────────────────────────────
-  # Nix
+  # Nix & System Configuration
   # ─────────────────────────────────────────────
 
   nix.settings.experimental-features = [
@@ -48,15 +51,9 @@
     "flakes"
   ];
 
-  # ─────────────────────────────────────────────
-  # Unfree packages
-  # ─────────────────────────────────────────────
-
+  # Habilita paquetes propietarios en todo el sistema
   nixpkgs.config.allowUnfree = true;
 
-  # ─────────────────────────────────────────────
-  # NixOS version
-  # ─────────────────────────────────────────────
-
+  # Versión inicial de NixOS
   system.stateVersion = "26.05";
 }

@@ -12,7 +12,6 @@
     vscodium
     # Servidor de lenguaje (LSP) para soporte inteligente de Nix
     nixd 
-    
     # Formateador oficial de código Nix
     nixfmt-rfc-style
   ];

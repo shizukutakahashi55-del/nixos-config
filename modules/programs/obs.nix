@@ -6,9 +6,15 @@
   # ─────────────────────────────────────────────
 
   environment.systemPackages = with pkgs; [
-    discord
-    telegram-desktop
     
+    # OBS empaquetado con soporte PipeWire
+    (obs-studio.override {
+      cudaSupport = true;
+    })
   ];
 
+  # Inyecta las librerías de NVIDIA registradas por el sistema
+  environment.sessionVariables = {
+    LD_LIBRARY_PATH = "/run/opengl-driver/lib";
+  };
 }
