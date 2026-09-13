@@ -1,11 +1,6 @@
 { config, pkgs, ... }:
 
 {
-  # ─────────────────────────────────────────────
-  # PERMISOS Y LICENCIAS
-  # ─────────────────────────────────────────────
-  # Permite la instalación de paquetes propietarios (como los drivers oficiales de NVIDIA y CUDA).
-  nixpkgs.config.allowUnfree = true;
 
   # ─────────────────────────────────────────────
   # INFRAESTRUCTURA GRÁFICA Y CÓDECS
