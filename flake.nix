@@ -1,4 +1,3 @@
-
 {
   description = "NixOS configuration";
 
@@ -8,11 +7,6 @@
   inputs = {
     # Canal principal de paquetes en su rama estable 26.05
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
-
-    # Hyprland 0.56.2
-    # Usamos directamente el tag de la versión para evitar
-    # que Hyprland cambie automáticamente a una versión futura.
-    hyprland.url = "github:hyprwm/Hyprland?ref=v0.56.2";
 
     # Parche Millennium para el cliente de Steam
     millennium.url =
@@ -36,9 +30,7 @@
   # ─────────────────────────────────────────────
   outputs = { self, nixpkgs, millennium, prismlauncher, ... }@inputs: {
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-
-      # Pasa las entradas (inputs) a todos los módulos (.nix)
-      # Esto permite utilizar inputs.hyprland desde hyprland.nix
+      # Pasa las entradas (inputs) a todos los módulos (.nix) del sistema
       specialArgs = {
         inherit inputs;
       };
@@ -47,7 +39,7 @@
         {
           # Arquitectura del sistema objetivo
           nixpkgs.hostPlatform = "x86_64-linux";
-
+          
           # Overlays globales para inyectar paquetes personalizados
           nixpkgs.overlays = [
             inputs.millennium.overlays.default
@@ -60,4 +52,3 @@
     };
   };
 }
-
