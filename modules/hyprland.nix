@@ -26,6 +26,8 @@
     networkmanagerapplet
     matugen
     quickshell
+    cava
+    wlogout
     
   ];
 }
