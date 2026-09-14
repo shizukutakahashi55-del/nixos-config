@@ -12,6 +12,7 @@
   environment.systemPackages = with pkgs; [
     #kitty
     awww
+    waybar
     waybar-mpris
     rofi
     hyprpaper
