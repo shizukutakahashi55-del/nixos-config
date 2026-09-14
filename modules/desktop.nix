@@ -24,4 +24,13 @@
   # ─────────────────────────────────────────────
 
   services.printing.enable = true;
+
+  # ─────────────────────────────────────────────
+  # Fonts
+  # ─────────────────────────────────────────────
+
+  fonts.packages = with pkgs; [
+    jetbrains-mono
+    nerd-fonts.jetbrains-mono  # Elimina esta línea si no necesitas Nerd Fonts
+  ];
 }
