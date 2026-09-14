@@ -7,6 +7,8 @@
     xwayland.enable = true;
   };
 
+  security.polkit.enable = true;
+
   environment.systemPackages = with pkgs; [
     #kitty
     awww
@@ -18,6 +20,7 @@
     wl-clipboard
     grim
     slurp
+    polkit_kde_agent
     swaynotificationcenter
     waypaper
     networkmanagerapplet
