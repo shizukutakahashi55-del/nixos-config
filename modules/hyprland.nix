@@ -30,6 +30,7 @@
     cava
     wlogout
     pavucontrol
+    imagemagick
     
   ];
 }
