@@ -20,11 +20,12 @@
     wl-clipboard
     grim
     slurp
-    polkit_kde_agent
+    kdePackages.polkit-kde-agent-1
     swaynotificationcenter
     waypaper
     networkmanagerapplet
     matugen
+    quickshell
     
   ];
 }
