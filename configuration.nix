@@ -18,6 +18,7 @@
     ./modules/audio.nix
     ./modules/nvidia.nix
     ./modules/users.nix
+    ./modules/hyprland.nix
 
     # ───────────────────────────────────────────
     # Programas
