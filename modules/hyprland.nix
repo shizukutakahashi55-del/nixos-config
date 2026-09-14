@@ -29,6 +29,7 @@
     quickshell
     cava
     wlogout
+    pavucontrol
     
   ];
 }
