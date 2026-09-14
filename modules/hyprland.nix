@@ -9,6 +9,7 @@
 
   environment.systemPackages = with pkgs; [
     #kitty
+    awww
     waybar
     rofi
     hyprpaper
@@ -17,5 +18,10 @@
     wl-clipboard
     grim
     slurp
+    swaynotificationcenter
+    waypaper
+    networkmanagerapplet
+    matugen
+    
   ];
 }
