@@ -20,6 +20,7 @@
     })
   ];
 
+  # Para conseguir el hash usar: nix hash convert --to sri sha256: (el numero que veas en github)
   # ─────────────────────────────────────────────
   # Servicio de Suwayomi Server (Tachidesk)
   # Servidor web local para lectura y gestión de manga
