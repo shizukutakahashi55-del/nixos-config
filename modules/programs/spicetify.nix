@@ -2,15 +2,23 @@
 
 let
   spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
-in {
+in
+{
+  # Importa la opción de módulo NixOS
+  imports = [
+    inputs.spicetify-nix.nixosModules.default
+  ];
+
   programs.spicetify = {
     enable = true;
-    enabledExtensions = with spicePkgs.extensions; [
-      adblockify
-      hidePodcasts
-      shuffle
-    ];
+
     theme = spicePkgs.themes.catppuccin;
     colorScheme = "mocha";
+
+    enabledExtensions = with spicePkgs.extensions; [
+      fullAppDisplay
+      shuffle
+      hidePodcasts
+    ];
   };
 }
