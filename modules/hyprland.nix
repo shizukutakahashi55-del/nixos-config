@@ -31,6 +31,8 @@
     wlogout
     pavucontrol
     imagemagick
+    libnotify
+    qt6Packages.qt6ct
     
   ];
 }
