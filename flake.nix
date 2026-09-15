@@ -23,17 +23,22 @@
       url = "github:PrismLauncher/PrismLauncher";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Spicetify para personalización declarativa de Spotify
+    spicetify-nix = {
+      url = "github:gerg-l/spicetify-nix";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # ─────────────────────────────────────────────
   # Outputs (Construcción del sistema)
   # ─────────────────────────────────────────────
-  outputs = { self, nixpkgs, millennium, prismlauncher, ... }@inputs: {
-    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
-      # Pasa las entradas (inputs) a todos los módulos (.nix) del sistema
-      specialArgs = {
-        inherit inputs;
-      };
+  outputs = { self, nixpkgs, spicetify-nix, ... }@inputs: {
+      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+        specialArgs = {
+          inherit inputs;
+        };
 
       modules = [
         {
