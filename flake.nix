@@ -24,9 +24,8 @@
     # Spicetify for declarative Spotify customization
     spicetify-nix.url = "github:Gerg-L/spicetify-nix";
 
-    # Hyprland input 
+    # Hyprland input
     hyprland.url = "github:hyprwm/Hyprland";
-    
   };
 
   outputs = { self, nixpkgs, spicetify-nix, ... }@inputs: {
