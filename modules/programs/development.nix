@@ -6,6 +6,7 @@
   # ─────────────────────────────────────────────
 
   environment.systemPackages = with pkgs; [
+    appimage-run
     curl
     direnv
     git
