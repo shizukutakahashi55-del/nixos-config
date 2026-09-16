@@ -1,0 +1,32 @@
+{ config, pkgs, ... }:
+
+{
+  # ─────────────────────────────────────────────
+  # Development
+  # ─────────────────────────────────────────────
+
+  environment.systemPackages = with pkgs; [
+    curl
+    direnv
+    git
+    gh
+    lazygit
+    python3
+    python3Packages.pip
+    vscodium
+    nixd 
+    nixfmt-rfc-style
+    nix-direnv 
+    nix-search-cli
+    ruff
+    tree
+    uv 
+    wget
+
+   #C++ Build Tools
+   gcc
+   gnumake
+   cmake
+   pkg-config 
+  ];
+}
