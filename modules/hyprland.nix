@@ -45,7 +45,6 @@
   # ============================================================================
   pavucontrol                   # Graphical volume control and mixer for PipeWire/PulseAudio
   cava                          # Real-time audio visualizer for terminal or bar
-  waybar-mpris                  # MPRIS module/integration to show media player in Waybar
 
   # ============================================================================
   #  SCREENSHOTS & CLIPBOARD
