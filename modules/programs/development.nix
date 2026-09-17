@@ -11,6 +11,8 @@
     direnv
     git
     gh
+    jdk21
+    jdk17
     lazygit
     python3
     python3Packages.pip
@@ -23,6 +25,7 @@
     tree
     uv 
     wget
+    vim
 
    #C++ Build Tools
    gcc

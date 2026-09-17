@@ -136,10 +136,10 @@ environment.sessionVariables = {
 ```text
 curl · direnv · git · gh · lazygit · python3 + pip
 vscodium · nixd · nixfmt-rfc-style · nix-direnv
-nix-search-cli · ruff · tree · uv · wget
+nix-search-cli · ruff · tree · uv · wget and more
 ```
 
-> `nix-search-cli` is precisely the optional dependency used by the package-search keybind in the dotfiles (`nix-rofi`) — it's already included here.
+> `nix-search-cli` is precisely the optional dependency used by the package-search keybind in the dotfiles (`nix-rofi`) — it's already included here. 
 
 ---
 

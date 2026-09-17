@@ -6,9 +6,10 @@
   # ─────────────────────────────────────────────
 
   environment.systemPackages = with pkgs; [
-    discord
+  # discord
     telegram-desktop
     spotify
+    vesktop
     
   ];
 
