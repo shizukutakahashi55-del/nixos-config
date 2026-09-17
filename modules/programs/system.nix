@@ -7,5 +7,7 @@
 
   environment.systemPackages = with pkgs; [
     jq
+    playerctl
+    swayosd
   ];
 }

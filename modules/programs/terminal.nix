@@ -16,5 +16,6 @@
     starship
     vim
     zsh
+    yazi         #Cli-FileBrowser
   ];
 }
