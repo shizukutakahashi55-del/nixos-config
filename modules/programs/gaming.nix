@@ -12,5 +12,6 @@
     prismlauncher
     protonplus
     wine
+    protontricks
   ];
 }

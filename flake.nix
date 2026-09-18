@@ -5,6 +5,7 @@
     # Main package channel on stable 26.05 release branch
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
 
+
     # Millennium patch for Steam client
     millennium.url =
       "github:SteamClientHomebrew/Millennium?dir=packages/nix";

@@ -6,6 +6,7 @@
   # ─────────────────────────────────────────────
 
   environment.systemPackages = with pkgs; [
+
     appimage-run
     curl
     direnv
@@ -23,14 +24,16 @@
     nix-search-cli
     ruff
     tree
+    qt6.qtquick3d
+    qt6.qtdeclarative
     uv 
     wget
     vim
 
-   #C++ Build Tools
-   gcc
-   gnumake
-   cmake
-   pkg-config 
+    # C++ Build Tools
+    gcc
+    gnumake
+    cmake
+    pkg-config 
   ];
 }

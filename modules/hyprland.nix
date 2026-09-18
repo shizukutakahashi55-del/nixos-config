@@ -40,6 +40,17 @@
 
   environment.systemPackages = with pkgs; [
 
+    # Wrapper de Quickshell con los módulos QML inyectados
+    (symlinkJoin {
+      name = "quickshell-wrapped";
+      paths = [ quickshell ];
+      nativeBuildInputs = [ makeWrapper ];
+      postBuild = ''
+        wrapProgram $out/bin/quickshell \
+          --prefix QML2_IMPORT_PATH : "${qt6.qtdeclarative}/${qt6.qtbase.qtQmlPrefix}"
+      '';
+    })
+
     # ==========================================================================
     #  DESKTOP ENVIRONMENT & SHELL (Hyprland Ecosystem)
     # ==========================================================================
@@ -48,7 +59,6 @@
     swaynotificationcenter        # Notification center and control panel (SwayNC)
     rofi                          # Application launcher and dynamic menu
     wlogout                       # Graphical menu for logout, reboot, and shutdown
-    quickshell                    # QML framework for creating custom widgets and interfaces
 
 
     # ==========================================================================
