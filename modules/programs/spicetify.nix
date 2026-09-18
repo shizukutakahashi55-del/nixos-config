@@ -3,7 +3,6 @@
 let
   spicePkgs = inputs.spicetify-nix.legacyPackages.${pkgs.system};
 
-  # Sleek vive dentro del monorepo oficial de temas de Spicetify.
   spicetifyThemesSrc = pkgs.fetchFromGitHub {
     owner = "spicetify";
     repo = "spicetify-themes";
@@ -23,13 +22,14 @@ in
     theme = {
       name = "Sleek";
       src = "${spicetifyThemesSrc}/Sleek";
+      colorScheme = "Base"; 
       injectCss = true;
       injectThemeJs = false;
       replaceColors = true;
       sidebarConfig = true;
       homeConfig = true;
       overwriteAssets = false;
-      additonalCss = "";
+      additionalCss = ""; 
     };
 
     enabledExtensions = with spicePkgs.extensions; [

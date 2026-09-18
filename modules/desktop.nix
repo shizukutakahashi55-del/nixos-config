@@ -8,12 +8,6 @@
   services.xserver.enable = true;
 
   # ─────────────────────────────────────────────
-  # KDE Plasma
-  # ─────────────────────────────────────────────
-
-  services.desktopManager.plasma6.enable = true;
-
-  # ─────────────────────────────────────────────
   # Display Manager
   # ─────────────────────────────────────────────
 
@@ -31,6 +25,6 @@
 
   fonts.packages = with pkgs; [
     jetbrains-mono
-    nerd-fonts.jetbrains-mono  # Elimina esta línea si no necesitas Nerd Fonts
+    nerd-fonts.jetbrains-mono  
   ];
 }

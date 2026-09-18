@@ -3,35 +3,37 @@
 {
 
   # ============================================================================
-  #  HYPRLAND
+  #  HYPRLAND & SCREEN LOCKER
   # ============================================================================
 
   programs.hyprland = {
-
     enable = true;
-
     withUWSM = true;
-
     xwayland.enable = true;
-
     package =
       inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
-
     portalPackage =
-  inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
+
+  # Generates /etc/pam.d/hyprlock & enables pass authentication.
+  programs.hyprlock.enable = true;
 
   systemd.user.services."xdg-desktop-portal-hyprland" = {
-  environment = {
-    QT_STYLE_OVERRIDE = "Fusion";
+    environment = {
+      QT_STYLE_OVERRIDE = "Fusion";
+    };
   };
-};
 
   # ============================================================================
   #  POLKIT
   # ============================================================================
 
   security.polkit.enable = true;
+
+  # If you want to enable PAM instead of program module,
+  # you can use this instead:
+  # security.pam.services.hyprlock = {};
 
 
   # ============================================================================
@@ -40,7 +42,7 @@
 
   environment.systemPackages = with pkgs; [
 
-    # Wrapper de Quickshell con los módulos QML inyectados
+    # Quickshell wrapper with QML modules
     (symlinkJoin {
       name = "quickshell-wrapped";
       paths = [ quickshell ];
@@ -75,7 +77,7 @@
     #  SCREEN LOCKING & POWER / SESSION MANAGEMENT
     # ==========================================================================
 
-    hyprlock                      # Native screen locker for Hyprland
+    # hyprlock no hace falta aquí ya que `programs.hyprlock.enable = true` lo instala automáticamente.
     hypridle                      # Daemon for sleep, screen timeout, and inactivity
     kdePackages.polkit-kde-agent-1 # Polkit authentication agent
 
