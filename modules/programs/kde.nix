@@ -14,6 +14,9 @@
   environment.systemPackages = with pkgs; [
     kdePackages.qtstyleplugin-kvantum
 
+    kdePackages.kate # Kate for testing
+
     inputs.kwin-effects-better-blur-dx.packages.${pkgs.system}.default
   ];
+ 
 }

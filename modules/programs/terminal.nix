@@ -14,7 +14,7 @@
     kitty
     ripgrep      #Reemplazo ultrarrápido de grep respetando archivos .gitignore.
     starship
-    vim
+    neovim
     zsh
     yazi         #Cli-FileBrowser
   ];

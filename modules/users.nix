@@ -15,9 +15,5 @@
       "wheel"
     ];
 
-    packages = with pkgs; [
-      # KDE
-      kdePackages.kate
-    ];
   };
 }

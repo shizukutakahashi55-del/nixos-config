@@ -31,11 +31,6 @@
 
   security.polkit.enable = true;
 
-  # If you want to enable PAM instead of program module,
-  # you can use this instead:
-  # security.pam.services.hyprlock = {};
-
-
   # ============================================================================
   #  SYSTEM PACKAGES
   # ============================================================================
@@ -58,26 +53,25 @@
     # ==========================================================================
 
     waybar                        # Customizable top/bottom status bar
-    swaynotificationcenter        # Notification center and control panel (SwayNC)
     rofi                          # Application launcher and dynamic menu
     wlogout                       # Graphical menu for logout, reboot, and shutdown
 
 
     # ==========================================================================
-    #  WALLPAPER MANAGEMENT & AESTHETICS (Matugen / Wallpapers)
+    #  WALLPAPER MANAGEMENT & AESTHETICS (Matugen / Wallpapers / Color Extraction)
     # ==========================================================================
 
     hyprpaper                     # Wallpaper management daemon for Hyprland
     waypaper                      # GUI for easily changing wallpapers
     matugen                       # Dynamic color palette generator (Material You)
     qt6Packages.qt6ct             # Theme configuration tool and integration for Qt6
+    hyprpicker                    # Pipeta de color interactiva para Wayland/Hyprland
 
 
     # ==========================================================================
     #  SCREEN LOCKING & POWER / SESSION MANAGEMENT
     # ==========================================================================
 
-    # hyprlock no hace falta aquí ya que `programs.hyprlock.enable = true` lo instala automáticamente.
     hypridle                      # Daemon for sleep, screen timeout, and inactivity
     kdePackages.polkit-kde-agent-1 # Polkit authentication agent
 
@@ -88,6 +82,7 @@
 
     pavucontrol                   # PipeWire/PulseAudio volume control
     cava                          # Real-time audio visualizer
+    ffmpeg                        # Procesamiento de imágenes/videos para extracción de frames
 
 
     # ==========================================================================
@@ -107,6 +102,8 @@
     libnotify                     # notify-send and notification library
     networkmanagerapplet          # NetworkManager tray applet
     imagemagick                   # Image manipulation utilities
+    jq                            # Procesamiento de JSON (requerido para scripts de Hyprland/Quickshell)
+    python3Packages.colorthief    # Extracción automática de paletas desde imágenes/video
 
   ];
 
