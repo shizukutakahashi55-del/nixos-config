@@ -30,7 +30,6 @@
     ./modules/programs/gaming.nix
     ./modules/programs/kde.nix
     ./modules/programs/obs.nix
-    ./modules/programs/spicetify.nix
     ./modules/programs/steam.nix
     ./modules/programs/suwayomi.nix
     ./modules/programs/system.nix

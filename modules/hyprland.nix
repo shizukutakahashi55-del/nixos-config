@@ -1,24 +1,30 @@
 { config, pkgs, inputs, ... }:
 
 {
-
   # ============================================================================
-  #  HYPRLAND & SCREEN LOCKER
+  # HYPRLAND & HYPR ECOSYSTEM
   # ============================================================================
 
   programs.hyprland = {
     enable = true;
     withUWSM = true;
     xwayland.enable = true;
+
     package =
       inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
+
     portalPackage =
-      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
+      inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}
+        .xdg-desktop-portal-hyprland;
   };
 
-  # Generates /etc/pam.d/hyprlock & enables pass authentication.
+  # Screen locker
   programs.hyprlock.enable = true;
 
+  # Idle / power management
+  # programs.hypridle.enable = true;
+
+  # XDG desktop portal for Hyprland
   systemd.user.services."xdg-desktop-portal-hyprland" = {
     environment = {
       QT_STYLE_OVERRIDE = "Fusion";
@@ -26,22 +32,29 @@
   };
 
   # ============================================================================
-  #  POLKIT
+  # POLKIT
   # ============================================================================
 
   security.polkit.enable = true;
 
+
   # ============================================================================
-  #  SYSTEM PACKAGES
+  # SYSTEM PACKAGES
   # ============================================================================
 
   environment.systemPackages = with pkgs; [
+
+    # --------------------------------------------------------------------------
+    # QUICKSHELL
+    # --------------------------------------------------------------------------
 
     # Quickshell wrapper with QML modules
     (symlinkJoin {
       name = "quickshell-wrapped";
       paths = [ quickshell ];
+
       nativeBuildInputs = [ makeWrapper ];
+
       postBuild = ''
         wrapProgram $out/bin/quickshell \
           --prefix QML2_IMPORT_PATH : "${qt6.qtdeclarative}/${qt6.qtbase.qtQmlPrefix}"
@@ -49,62 +62,72 @@
     })
 
     # ==========================================================================
-    #  DESKTOP ENVIRONMENT & SHELL (Hyprland Ecosystem)
+    #   HYPRLAND ECOSYSTEM
     # ==========================================================================
 
-    waybar                        # Customizable top/bottom status bar
-    rofi                          # Application launcher and dynamic menu
-    wlogout                       # Graphical menu for logout, reboot, and shutdown
-
-
-    # ==========================================================================
-    #  WALLPAPER MANAGEMENT & AESTHETICS (Matugen / Wallpapers / Color Extraction)
-    # ==========================================================================
-
-    hyprpaper                     # Wallpaper management daemon for Hyprland
-    waypaper                      # GUI for easily changing wallpapers
-    matugen                       # Dynamic color palette generator (Material You)
-    qt6Packages.qt6ct             # Theme configuration tool and integration for Qt6
-    hyprpicker                    # Pipeta de color interactiva para Wayland/Hyprland
-
+    hyprpaper
+    hyprshot
+    hyprsunset
+    hyprshutdown
+    hyprsysteminfo
+    hypridle
+    
 
     # ==========================================================================
-    #  SCREEN LOCKING & POWER / SESSION MANAGEMENT
+    # DESKTOP 
     # ==========================================================================
 
-    hypridle                      # Daemon for sleep, screen timeout, and inactivity
-    kdePackages.polkit-kde-agent-1 # Polkit authentication agent
-
-
-    # ==========================================================================
-    #  AUDIO & MULTIMEDIA CONTROL
-    # ==========================================================================
-
-    pavucontrol                   # PipeWire/PulseAudio volume control
-    cava                          # Real-time audio visualizer
-    ffmpeg                        # Procesamiento de imágenes/videos para extracción de frames
-
+    waybar
+    rofi
+    wlogout
 
     # ==========================================================================
-    #  SCREENSHOTS & CLIPBOARD
+    # WALLPAPERS / THEMING
     # ==========================================================================
 
-    grim                          # Screenshot utility for Wayland
-    slurp                         # On-screen region selector
-    wl-clipboard                  # Clipboard management utilities
-
+    awww
+    waypaper
+    matugen
+    qt6Packages.qt6ct
 
     # ==========================================================================
-    #  SYSTEM UTILITIES & NOTIFICATIONS
+    # POLKIT / SESSION
     # ==========================================================================
 
-    awww                          # Wayland Wallpaper Wizard
-    libnotify                     # notify-send and notification library
-    networkmanagerapplet          # NetworkManager tray applet
-    imagemagick                   # Image manipulation utilities
-    jq                            # Procesamiento de JSON (requerido para scripts de Hyprland/Quickshell)
-    python3Packages.colorthief    # Extracción automática de paletas desde imágenes/video
+    kdePackages.polkit-kde-agent-1
+    
 
+    # ==========================================================================
+    # AUDIO / MULTIMEDIA
+    # ==========================================================================
+
+    pavucontrol
+    cava
+    ffmpeg
+    mpvpaper
+    socat
+
+    # ==========================================================================
+    # SCREENSHOTS / CLIPBOARD
+    # ==========================================================================
+
+    grim
+    slurp
+    wl-clipboard
+
+    # ==========================================================================
+    # NOTIFICATIONS / SYSTEM UTILITIES
+    # ==========================================================================
+
+    libnotify
+    networkmanagerapplet
+    imagemagick
+
+    # ==========================================================================
+    # WAYLAND UTILITIES
+    # ==========================================================================
+
+    wtype
+    wev
   ];
-
 }
