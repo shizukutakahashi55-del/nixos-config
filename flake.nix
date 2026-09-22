@@ -54,7 +54,7 @@
   };
 
 
-  outputs = { self, nixpkgs, spicetify-nix, ... }@inputs: {
+  outputs = { self, nixpkgs, ... }@inputs: {
 
     nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
 

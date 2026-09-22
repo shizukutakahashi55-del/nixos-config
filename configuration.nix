@@ -29,6 +29,7 @@
     ./modules/programs/development.nix
     ./modules/programs/gaming.nix
     ./modules/programs/kde.nix
+    ./modules/programs/media.nix
     ./modules/programs/obs.nix
     ./modules/programs/steam.nix
     ./modules/programs/suwayomi.nix

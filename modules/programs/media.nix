@@ -8,14 +8,11 @@
   # ─────────────────────────────────────────────
 
   environment.systemPackages = with pkgs; [
-  # discord
-    telegram-desktop
-    spotify
-    vesktop
-
-    # Sonora native player for linux spotify
-    inputs.sonora.packages.${pkgs.stdenv.hostPlatform.system}.default
   
+    mpv      # Media player general use
+    vlc      # Video Player VLC
+    nomacs   # Image Vierwer
+
   ];
 
 }
