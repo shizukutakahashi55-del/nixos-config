@@ -19,7 +19,7 @@
   };
 
   # Screen locker
-  programs.hyprlock.enable = true;
+  # programs.hyprlock.enable = true;
 
   # Idle / power management
   # programs.hypridle.enable = true;
@@ -71,7 +71,7 @@
     hyprshutdown
     hyprsysteminfo
     hypridle
-    
+    hyprlock
 
     # ==========================================================================
     # DESKTOP 

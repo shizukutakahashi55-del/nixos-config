@@ -1,20 +1,26 @@
 { config, pkgs, ... }:
 
+#Networking Module
 {
   
   # ─────────────────────────────────────────────
   # Bluetooth
   # ─────────────────────────────────────────────
   hardware.bluetooth = {
-  enable = true;
-  powerOnBoot = true;
-  
-  };
+      enable = true;
+      powerOnBoot = true;
+      settings = {
+        General = {
+          Enable = "Source,Sink,Media,Socket";
+          Experimental = true; # Ayuda con adaptadores caprichosos o BLE
+        };
+      };
+    };
 
-  environment.systemPackages = with pkgs; [
-      blueman
-   ];
+  services.blueman.enable = true;
   
+  hardware.enableAllFirmware = true;
+
   # ─────────────────────────────────────────────
   # Network
   # ─────────────────────────────────────────────

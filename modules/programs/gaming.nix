@@ -13,5 +13,7 @@
     protonplus
     wine
     protontricks
+    goverlay
+    
   ];
 }

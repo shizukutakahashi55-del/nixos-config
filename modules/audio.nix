@@ -16,9 +16,9 @@
     pulse.enable = true;
 
     # JACK
-    # jack.enable = true;
+    #jack.enable = true;
 
     # WirePlumber
-    # wireplumber.enable = true;
+    wireplumber.enable = true;
   };
 }

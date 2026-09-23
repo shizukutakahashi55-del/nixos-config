@@ -1,175 +1,740 @@
-# ❄️ NixOS Configuration (Flakes) + NVIDIA
+# NixOS Configuration
 
-Modular, declarative **NixOS** configuration, managed with **Nix Flakes**, **Git**, and **KDE Plasma**, on an **NVIDIA** GPU.
+Personal **NixOS** configuration managed with **Nix Flakes** and a modular `.nix` structure.
 
-> This repository covers **system-level** configuration (packages, drivers, services, hardware). User-level configuration (Hyprland, Waybar, Rofi, themes, etc.) lives separately in [dotfiles-nix](https://github.com/shizukutakahashi55-del/dotfiles-nix).
-
----
-
-## 🚀 Installation
-
-> **Requirement:** you need `git`. If you don't have it: `nix-shell -p git` (temporary), or add it permanently to your NixOS configuration.
-
-### 1. Clone the repository
-
-```bash
-git clone https://github.com/shizukutakahashi55-del/nixos-config.git ~/nixos-config
-cd ~/nixos-config
-```
-
-### 2. Generate your `hardware-configuration.nix`
-
-> **Important:** this file is specific to each machine (disks, filesystems, hardware). **Don't reuse the one from another PC.**
-
-* **Fresh install (minimal ISO):** generate the file and replace the one in the repo:
-
-  ```bash
-  sudo nixos-generate-config
-  cp /etc/nixos/hardware-configuration.nix ./hardware-configuration.nix
-  ```
-
-* **Graphical install (Calamares or another GUI installer):** you'll usually already have a `hardware-configuration.nix` generated at `/etc/nixos/`. Skip the command above and just copy it the same way (`cp /etc/nixos/hardware-configuration.nix ./hardware-configuration.nix`) before continuing.
-
-### 3. Stage the changes in Git
-
-```bash
-git add hardware-configuration.nix
-```
-
-If it's a new machine and you also modified other modules:
-
-```bash
-git add .
-```
-
-### 4. Apply the configuration
-
-```bash
-cd ~/nixos-config
-sudo nixos-rebuild switch --flake .#nixos
-```
-
-> `nixos` is the hostname defined in `flake.nix` (`nixosConfigurations.nixos`) and in `modules/networking.nix` (`networking.hostName`). If you use a different hostname, update **both** files and replace `nixos` with that name in the command.
+> **Important:** this configuration currently **does not use Home Manager**.
+> Packages, services, and system configuration are managed directly through NixOS modules.
+> User services, such as Tachidesk/Suwayomi, can also be declared from NixOS using `systemd.user.services`.
 
 ---
 
-## 🔄 Updating the system
+## ✨ Features
 
-```bash
-nix flake update                          # updates the flake inputs
-sudo nixos-rebuild switch --flake .#nixos # applies the new configuration
-```
-
-## 🧪 Testing changes without making them permanent
-
-```bash
-sudo nixos-rebuild test --flake .#nixos
-```
-
-Applies the configuration only until the next reboot, so you can catch errors before using `switch`.
+- ❄️ NixOS + Nix Flakes
+- 🧩 Modular configuration using `.nix` modules
+- 🪟 Hyprland + Wayland ecosystem
+- 🖥️ KDE Plasma 6 + SDDM
+- 🟩 NVIDIA graphics with acceleration and codec support
+- 🔊 PipeWire with ALSA, PulseAudio, and 32-bit support
+- 🎮 Steam, Lutris, Wine, ProtonPlus, MangoHud, Protontricks, and gaming tools
+- 🎥 OBS Studio with CUDA support
+- 🌐 NetworkManager + Bluetooth
+- 📦 Flatpak + Flathub
+- 📖 Suwayomi/Tachidesk as an on-demand user service
+- 🛠️ Development tools for Nix, Python, C/C++, and Git
+- 💻 Ghostty, Kitty, WezTerm, Foot, Neovim, Zsh, Starship, Yazi, and CLI utilities
+- 🌈 Matugen, Waybar, Rofi, Quickshell, and other Hyprland customization tools
 
 ---
 
-## 📂 Repository structure
+## 📁 Structure
 
 ```text
 nixos-config/
-├── flake.nix                   # Flake entry point and external inputs
-├── flake.lock                  # Locked versions of the inputs
-├── configuration.nix           # Main module: imports everything else
-├── hardware-configuration.nix  # Auto-generated, machine-specific
+├── flake.nix
+├── flake.lock
+├── configuration.nix
+├── hardware-configuration.nix
+├── README.md
+│
 └── modules/
-    ├── audio.nix                # PipeWire (ALSA + 32-bit + Pulse compat)
-    ├── boot.nix                 # systemd-boot + stable kernel
-    ├── desktop.nix               # X11, KDE Plasma 6, SDDM, printing, fonts
-    ├── hyprland.nix              # Hyprland + ecosystem (see detail below)
-    ├── networking.nix            # Bluetooth, NetworkManager, hostname, timezone, keyboard
-    ├── nvidia.nix                 # Proprietary drivers, VA-API/VDPAU, environment variables
-    │                              # ⚠️ See "NVIDIA environment variables" note below —
-    │                              # these can overlap with dotfiles-nix's Hyprland env config.
-    ├── users.nix                  # System user and personal packages
+    ├── boot.nix
+    ├── networking.nix
+    ├── desktop.nix
+    ├── audio.nix
+    ├── nvidia.nix
+    ├── users.nix
+    ├── hyprland.nix
     │
     ├── programs/
-    │   ├── browsers.nix          # Firefox, Brave, Chromium, LibreWolf
-    │   ├── communication.nix     # Discord, Telegram, Spotify
-    │   ├── development.nix       # See "Development packages" below
-    │   ├── gaming.nix             # Gamemode, Lutris, MangoHud, PrismLauncher, ProtonPlus, Wine
-    │   ├── kde.nix                 # Kvantum + improved KWin blur (external flake)
-    │   ├── obs.nix                  # OBS Studio with CUDA support (NVIDIA)
-    │   ├── spicetify.nix            # Spotify with Catppuccin Mocha theme via spicetify-nix
-    │   ├── steam.nix                # Steam (Millennium client), Remote Play, dedicated server
-    │   ├── suwayomi.nix             # Suwayomi manga server, pinned to v2.3.2243
-    │   ├── system.nix               # CLI utilities (jq)
-    │   └── terminal.nix             # Alacritty, Kitty, Zsh, Starship, Fastfetch, eza, fd, fzf, ripgrep, vim
+    │   ├── browsers.nix
+    │   ├── communication.nix
+    │   ├── development.nix
+    │   ├── gaming.nix
+    │   ├── kde.nix
+    │   ├── media.nix
+    │   ├── obs.nix
+    │   ├── steam.nix
+    │   ├── suwayomi.nix
+    │   ├── system.nix
+    │   └── terminal.nix
     │
     └── services/
-        └── flatpak.nix            # Flatpak + Flathub repo added automatically
+        └── flatpak.nix
 ```
 
-### Hyprland (`modules/hyprland.nix`)
+### Main files
 
-Installs Hyprland (with UWSM and XWayland) and the whole ecosystem consumed by the [dotfiles](https://github.com/shizukutakahashi55-del/dotfiles-nix): Waybar, SwayNC, Rofi, Wlogout, QuickShell, Hyprpaper, Waypaper, Matugen, Hyprlock, Hypridle, Cava, screenshot tools (grim/slurp), Wayland clipboard, and more. If you're going to use the dotfiles, this is the module that provides the packages they configure.
+| File | Purpose |
+|---|---|
+| `flake.nix` | Defines the configuration, external inputs, and the `nixos` host. |
+| `flake.lock` | Pins the exact versions of the flake inputs. |
+| `configuration.nix` | Main entry point; imports the configuration modules. |
+| `hardware-configuration.nix` | Hardware and filesystem configuration specific to the machine. |
+| `modules/*.nix` | Configuration split by responsibility. |
 
-### NVIDIA environment variables (`modules/nvidia.nix`)
+---
 
-This module sets, among other things, the following system-wide environment variables so applications (OBS, browsers, screen compositors) correctly detect and use the NVIDIA GPU and its codecs:
+# 🧩 Modules
 
-```nix
-# ─────────────────────────────────────────────
-# SYSTEM ENVIRONMENT VARIABLES
-# ─────────────────────────────────────────────
-# Defines the global variables required to force applications (such as OBS,
-# browsers, and screen compositors) to detect and use the NVIDIA GPU and its codecs.
-environment.sessionVariables = {
-  LIBVA_DRIVER_NAME = "nvidia";          # Forces the VA-API video acceleration backend to NVIDIA.
-  __GLX_VENDOR_LIBRARY_NAME = "nvidia"; # Ensures that OpenGL uses the NVIDIA implementation.
-  NVD_BACKEND = "direct";               # Optimizes direct rendering for NVIDIA drivers.
-};
-```
+## System
 
-> ⚠️ **Possible duplication if you also use `dotfiles-nix`:** `environment.sessionVariables` writes these variables to `/etc/set-environment`, loaded via PAM for normal login sessions. Depending on how Hyprland is launched (systemd user session, greetd/tuigreet, a graphical display manager, or `Hyprland` straight from a TTY), the compositor doesn't always reliably inherit that environment — which is why the Hyprland config in `dotfiles-nix` (under `.config/hypr/modules/hardware/`) commonly re-declares the *same* three variables via `env = VAR,value` lines.
->
-> This isn't necessarily a bug — it's a defensive redundancy that's common in Hyprland+NVIDIA setups precisely because propagation of `environment.sessionVariables` to the compositor isn't guaranteed across every startup path. But it **is** a maintenance risk: if you change a value on one side and forget the other, you'll get inconsistent behavior that's hard to diagnose (e.g. VA-API working for apps launched from a terminal but not from the Hyprland launcher, or vice versa). If you keep both, make sure the **values match exactly** on both sides — or pick one as the single source of truth and comment out the other.
+### `modules/boot.nix`
 
-### Development packages (`modules/programs/development.nix`)
+Configures:
+
+- systemd-boot
+- EFI
+- the stable Nixpkgs kernel
+
+### `modules/networking.nix`
+
+Configures:
+
+- NetworkManager
+- Bluetooth
+- Blueman
+- firmware
+- hostname
+- timezone
+- locale
+- keyboard layout
+
+Current machine-specific values include:
 
 ```text
-curl · direnv · git · gh · lazygit · python3 + pip
-vscodium · nixd · nixfmt-rfc-style · nix-direnv
-nix-search-cli · ruff · tree · uv · wget and more
+hostname: nixos
+timezone: America/Phoenix
+locale:   en_US.UTF-8
+keyboard: us
 ```
 
-> `nix-search-cli` is precisely the optional dependency used by the package-search keybind in the dotfiles (`nix-rofi`) — it's already included here. 
+Review these values if you reuse this configuration on another machine.
+
+### `modules/users.nix`
+
+Declares the main user:
+
+```text
+oozenix
+```
+
+with the following groups:
+
+```text
+networkmanager
+wheel
+```
+
+Change the username if you reuse this configuration on another installation.
+
+### `modules/audio.nix`
+
+Configures PipeWire with:
+
+- ALSA
+- 32-bit ALSA support
+- PulseAudio compatibility
+- WirePlumber
+- RTKit
 
 ---
 
-## 📌 Features
+# 🖥️ Desktop
 
-* ❄️ Declarative NixOS, managed with **Nix Flakes**
-* 🧩 Modular configuration (one file per responsibility)
-* 🖥️ **KDE Plasma 6** + SDDM, with Kvantum and improved KWin blur
-* 🪟 **Hyprland** with the full ecosystem (Waybar, Rofi, SwayNC, QuickShell...)
-* 🟩 **NVIDIA**: proprietary drivers, VA-API/VDPAU, variables for OBS/browsers
-* 🔊 **PipeWire** (ALSA + 32-bit support for gaming)
-* 🎮 Gaming: Steam (Millennium), Lutris, Wine, PrismLauncher, MangoHud
-* 🎥 OBS Studio with CUDA acceleration
-* 🎵 Spotify + Spicetify (Catppuccin Mocha theme)
-* 📖 Suwayomi manga server (port 4567)
-* 📦 Flatpak / Flathub
-* 🌐 Network, Bluetooth, timezone (`America/Phoenix` by default) and keyboard, all configurable
-* 🛠️ Full development environment (see above)
+## `modules/desktop.nix`
+
+Configures general desktop components:
+
+- X11
+- SDDM
+- printing
+- JetBrains Mono fonts
+- JetBrains Mono Nerd Font
+
+## `modules/hyprland.nix`
+
+Provides the Hyprland environment through the Hyprland flake input.
+
+Includes:
+
+- Hyprland
+- UWSM
+- XWayland
+- Hyprland XDG Desktop Portal
+- Polkit
+- Waybar
+- Rofi
+- Wlogout
+- Quickshell
+- Hyprpaper
+- Hyprshot
+- Hyprsunset
+- Hyprshutdown
+- Hyprsysteminfo
+- Hypridle
+- Hyprlock
+- Matugen
+- Waypaper
+- awww
+- qt6ct
+- Cava
+- Pavucontrol
+- mpvpaper
+- grim/slurp
+- wl-clipboard
+- libnotify
+- NetworkManager applet
+- Wayland utilities
+
+This module provides the software required by the Hyprland desktop configuration.
+
+> The visual configuration, keybinds, window rules, Waybar configuration, Rofi configuration, etc. can live in your Hyprland dotfiles. This repository primarily provides the environment and required packages through NixOS.
 
 ---
 
-## ⚠️ Considerations
+# 🟩 NVIDIA
 
-This configuration is built for my own machine; before using it on another one, review especially:
+## `modules/nvidia.nix`
 
-* `hardware-configuration.nix` — always regenerate, never reuse
-* `modules/nvidia.nix` — assumes an NVIDIA GPU; on AMD/Intel, remove or adapt this module (see the environment-variable note above too)
-* `modules/users.nix` — hardcoded `oozenix` user, replace it with your own
-* `modules/networking.nix` — hostname `nixos`, timezone `America/Phoenix`, keyboard `us`
-* The hostname in `flake.nix` (`nixosConfigurations.nixos`) must match `networking.hostName` and the `--flake .#<host>` flag
-* `modules/programs/steam.nix` and `modules/programs/kde.nix` depend on third-party external flakes (Millennium, kwin-effects-better-blur-dx) — check that they're still maintained before using them
+Configures the proprietary NVIDIA driver and graphics support for:
 
-Don't apply this configuration directly on a production machine without first reviewing the modules and the specific system hardware.
+- OpenGL
+- Vulkan
+- 32-bit graphics
+- VA-API
+- VDPAU
+- NVIDIA video acceleration
+
+It also defines environment variables used by applications such as browsers, OBS, and Wayland compositors:
+
+```text
+LIBVA_DRIVER_NAME=nvidia
+__GLX_VENDOR_LIBRARY_NAME=nvidia
+NVD_BACKEND=direct
+```
+
+The module uses the stable NVIDIA driver available for the selected kernel.
+
+> **Important:** this module is intended for a machine using NVIDIA graphics. If you use AMD or Intel, adapt or remove this module.
+
+---
+
+# 🎮 Gaming
+
+## `modules/programs/steam.nix`
+
+Configures Steam and uses Millennium as the Steam package.
+
+It also enables the firewall rules required for:
+
+- Steam Remote Play
+- Steam Dedicated Server
+
+## `modules/programs/gaming.nix`
+
+Includes gaming tools:
+
+```text
+gamemode
+lutris
+mangohud
+prismlauncher
+protonplus
+wine
+protontricks
+goverlay
+```
+
+---
+
+# 🎥 Multimedia
+
+## `modules/programs/obs.nix`
+
+Installs OBS Studio with CUDA support and configures:
+
+```text
+LD_LIBRARY_PATH=/run/opengl-driver/lib
+```
+
+to make the required graphics libraries available.
+
+## `modules/programs/media.nix`
+
+Includes:
+
+- MPV
+- VLC
+- Nomacs
+
+## `modules/programs/communication.nix`
+
+Includes:
+
+- Telegram Desktop
+- Spotify
+- Vesktop
+- Sonora
+
+## `modules/programs/browsers.nix`
+
+Includes:
+
+- Brave
+- LibreWolf
+- Vivaldi
+
+---
+
+# 📖 Suwayomi / Tachidesk
+
+## `modules/programs/suwayomi.nix`
+
+Suwayomi is manually pinned to:
+
+```text
+v2.3.2243
+```
+
+using an overlay that downloads the official `.jar` release from GitHub.
+
+The configuration currently **does not use `services.suwayomi-server`** as a system service.
+
+Instead, the server is declared as a **user-level systemd service**:
+
+```text
+systemd.user.services.tachidesk
+```
+
+This keeps the server stopped until it is needed.
+
+### Commands
+
+```bash
+tachidesk start
+tachidesk stop
+tachidesk restart
+tachidesk status
+```
+
+You can also inspect the service directly with systemd:
+
+```bash
+systemctl --user status tachidesk.service
+```
+
+The service has no `wantedBy`, so it **does not start automatically when the system boots**.
+
+When running, Suwayomi is normally available at:
+
+```text
+http://localhost:4567
+```
+
+> The configuration is prepared for a future Rofi launcher/toggle that can start and stop Suwayomi directly from the desktop.
+
+---
+
+# 💻 Terminal & CLI
+
+## `modules/programs/terminal.nix`
+
+Includes:
+
+- Ghostty
+- Kitty
+- WezTerm
+- Foot
+- Neovim
+- Zsh
+- Starship
+- Yazi
+- btop
+- eza
+- fastfetch
+- fd
+- fzf
+- ripgrep
+
+## `modules/programs/system.nix`
+
+Additional utilities:
+
+- jq
+- playerctl
+- swayosd
+
+---
+
+# 🛠️ Development
+
+## `modules/programs/development.nix`
+
+Includes development and NixOS administration tools:
+
+```text
+git
+gh
+lazygit
+curl
+wget
+direnv
+nix-direnv
+nixd
+nixfmt-rfc-style
+nix-search-cli
+vscodium
+python3
+pip
+uv
+ruff
+gcc
+gnumake
+cmake
+pkg-config
+jdk17
+jdk21
+```
+
+It also includes Qt-related and AppImage tools.
+
+---
+
+# 📦 Flatpak
+
+## `modules/services/flatpak.nix`
+
+Enables Flatpak and automatically registers Flathub through a systemd service.
+
+After applying the configuration, verify it with:
+
+```bash
+flatpak remotes
+```
+
+---
+
+# 🔗 Flake Inputs
+
+`flake.nix` uses several external inputs:
+
+- `nixpkgs` — NixOS and package base
+- `millennium` — Steam Millennium
+- `kwin-effects-better-blur-dx` — KWin effect
+- `prismlauncher` — Prism Launcher
+- `sonora` — Spotify client
+- `hyprland` — Hyprland and its portal
+
+Exact input versions are stored in:
+
+```text
+flake.lock
+```
+
+To update the inputs:
+
+```bash
+nix flake update
+```
+
+Review the changes before applying them to the system.
+
+---
+
+# 🚀 Installation
+
+## 1. Clone the repository
+
+```bash
+git clone <REPOSITORY_URL>
+cd nixos-config
+```
+
+If the repository is already cloned:
+
+```bash
+cd nixos-config
+```
+
+---
+
+## 2. Review the hardware configuration
+
+`hardware-configuration.nix` is specific to the machine where it was generated.
+
+Do not blindly reuse it on another computer.
+
+To generate a new hardware configuration:
+
+```bash
+sudo nixos-generate-config
+```
+
+If installing from scratch, review the generated files before applying the configuration.
+
+---
+
+## 3. Review machine-specific settings
+
+Before running `nixos-rebuild`, review at least:
+
+```text
+modules/users.nix
+modules/networking.nix
+modules/nvidia.nix
+hardware-configuration.nix
+flake.nix
+```
+
+In particular, check:
+
+- username
+- hostname
+- timezone
+- keyboard layout
+- GPU
+- filesystem configuration
+- disk UUIDs
+- the host name defined in `flake.nix`
+
+---
+
+## 4. Check the flake
+
+From the repository root:
+
+```bash
+nix flake check
+```
+
+You can also test the configuration without switching to it:
+
+```bash
+sudo nixos-rebuild dry-build --flake .#nixos
+```
+
+This helps catch evaluation and build errors before applying the configuration.
+
+---
+
+## 5. Apply the configuration
+
+```bash
+sudo nixos-rebuild switch --flake .#nixos
+```
+
+The `nixos` host corresponds to:
+
+```nix
+nixosConfigurations.nixos
+```
+
+in `flake.nix`.
+
+---
+
+# 🔄 Updating the System
+
+First update the flake inputs:
+
+```bash
+nix flake update
+```
+
+Then test the configuration:
+
+```bash
+sudo nixos-rebuild dry-build --flake .#nixos
+```
+
+Finally apply it:
+
+```bash
+sudo nixos-rebuild switch --flake .#nixos
+```
+
+NixOS keeps system generations, allowing you to return to an earlier configuration if needed.
+
+---
+
+# ↩️ Rolling Back
+
+List the available system generations:
+
+```bash
+sudo nix-env --list-generations --profile /nix/var/nix/profiles/system
+```
+
+You can also reboot and select an older generation from systemd-boot.
+
+To switch back to the previous generation from the current system:
+
+```bash
+sudo nixos-rebuild switch --rollback
+```
+
+---
+
+# 🧹 Cleaning the Nix Store
+
+To remove old generations:
+
+```bash
+sudo nix-collect-garbage -d
+```
+
+> Do not run this if you still need old generations for rollback.
+
+You can check the size of the Nix store with:
+
+```bash
+du -sh /nix/store
+```
+
+---
+
+# 🏠 Home Manager
+
+This configuration **currently does not use Home Manager**.
+
+Packages and system configuration are managed directly through NixOS, primarily using:
+
+```nix
+environment.systemPackages
+```
+
+User-level services can also be declared directly from NixOS modules. For example, Tachidesk uses:
+
+```nix
+systemd.user.services.tachidesk
+```
+
+Therefore, Home Manager is not required to use this repository.
+
+If Home Manager is added in the future, it would make sense to clearly separate:
+
+- system configuration → NixOS
+- user packages/configuration → Home Manager
+- Hyprland visual configuration → dotfiles
+
+For now, the repository is intentionally designed to work without Home Manager.
+
+---
+
+# ⚠️ Before Reusing This Configuration
+
+This configuration was created for a specific machine. Before using it elsewhere, review at least:
+
+### Hardware
+
+```text
+hardware-configuration.nix
+modules/nvidia.nix
+```
+
+### User
+
+```text
+modules/users.nix
+```
+
+### Networking and localization
+
+```text
+modules/networking.nix
+```
+
+### Flake / host
+
+```text
+flake.nix
+```
+
+The current host is:
+
+```text
+nixos
+```
+
+and is built with:
+
+```bash
+sudo nixos-rebuild switch --flake .#nixos
+```
+
+### External inputs
+
+Some modules depend on external flakes. If one of them changes, becomes outdated, or stops working, the configuration may need to be adapted.
+
+---
+
+# 📌 Recommended Workflow
+
+For normal configuration changes:
+
+```bash
+# 1. Edit the configuration
+$EDITOR modules/some-module.nix
+
+# 2. Check the flake
+nix flake check
+
+# 3. Test the build
+sudo nixos-rebuild dry-build --flake .#nixos
+
+# 4. Apply the configuration
+sudo nixos-rebuild switch --flake .#nixos
+
+# 5. Check for failed services
+systemctl --failed
+```
+
+To update dependencies:
+
+```bash
+nix flake update
+sudo nixos-rebuild dry-build --flake .#nixos
+sudo nixos-rebuild switch --flake .#nixos
+```
+
+---
+
+## 🗂️ Configuration Philosophy
+
+The main goal is to keep `configuration.nix` small and organize the system into independent modules:
+
+```text
+configuration.nix
+       │
+       ├── system
+       │    ├── boot
+       │    ├── networking
+       │    ├── audio
+       │    ├── nvidia
+       │    └── users
+       │
+       ├── desktop
+       │    ├── KDE
+       │    └── Hyprland
+       │
+       ├── programs
+       │    ├── terminal
+       │    ├── gaming
+       │    ├── browsers
+       │    ├── development
+       │    ├── media
+       │    ├── Steam
+       │    └── Suwayomi
+       │
+       └── services
+            └── Flatpak
+```
+
+This means that adding or removing software usually only requires changing the corresponding module instead of turning `configuration.nix` into one large file.
+
+---
+
+## 📄 License
+
+This is a personal configuration. If you reuse parts of it, also review the licenses and terms of the external projects used by the flake inputs.

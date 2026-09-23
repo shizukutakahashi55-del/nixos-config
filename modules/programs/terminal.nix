@@ -7,7 +7,10 @@
 
   environment.systemPackages = with pkgs; [
     
-    alacritty
+    #alacritty
+    ghostty
+    wezterm
+    foot
     btop
     eza          #Reemplazo moderno e interactivo de ls con iconos y árbol de archivos.
     fastfetch
